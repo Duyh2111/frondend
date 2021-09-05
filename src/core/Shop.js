@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import Card from "./Card";
+import CardProduct from "./Card";
 import { getCategories, getFilteredProducts } from "./apiCore";
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
+import Search from "./Search";
+import { Card, Container } from "react-bootstrap";
 
 const Shop = () => {
   const [myFilters, setMyFilters] = useState({
     filters: { category: [], price: [] },
   });
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(false);
-  const [limit, setLimit] = useState(6);
+  const [setError] = useState(false);
+  const [limit] = useState(6);
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -96,13 +98,11 @@ const Shop = () => {
   };
 
   return (
-    <Layout
-      title="Shop Page"
-      description="Search and find books of your choice"
-      className="container-fluid"
-    >
+    <Layout>
       <div className="row">
-        <div className="col-4">
+        <div className="col-3">
+          <Card style={{border: 'none'}}>
+            <Container  className="mt-4 ml-2 mb-4">
           <h4>Filter by categories</h4>
           <ul>
             <Checkbox
@@ -117,14 +117,17 @@ const Shop = () => {
               handleFilters={(filters) => handleFilters(filters, "price")}
             />
           </div>
+          </Container>
+          </Card>
         </div>
 
-        <div className="col-8">        
-          <h2 className="mb-4">Products</h2>
+        <div className="col-9">
+          <Search />
+          <h2 className="mb-3">Products</h2>
           <div className="row">
             {filteredResults.map((product, i) => (
               <div key={i} className="col-4 mb-3">
-                <Card product={product} />
+                <CardProduct product={product} />
               </div>
             ))}
           </div>

@@ -1,21 +1,18 @@
 import React from "react";
 import Menu from "./Menu";
+import { Container } from "react-bootstrap";
 import "../styles.css";
+import Footer from "./Footer"
 
-const Layout = ({
-    title = "Title",
-    description = "Description",
-    className,
-    children
-}) => (
-    <div>
-        <Menu />
-        <div className="jumbotron">
-            <h2>{title}</h2>
-            <p className="lead">{description}</p>
-        </div>
-        <div className={className}>{children}</div>
-    </div>
+const Layout = ({ className, children }) => (
+  <div>
+    <Menu />
+    <br />
+    <Container>
+      <div className={className}>{children}</div>
+    </Container>
+    <Footer/>
+  </div>
 );
 
 export default Layout;

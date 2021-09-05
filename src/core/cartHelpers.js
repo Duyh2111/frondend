@@ -15,7 +15,7 @@ export const addItem = (item, next) => {
       });
   
       localStorage.setItem("cart", JSON.stringify(cart));
-      next();
+  
     }
   };
   

@@ -1,13 +1,15 @@
 import React from "react";
 
 const ShowImage = ({ item, url }) => (
-    <div className="product-img">
+    <div className="product-img text-xs-center text-lg-center">
+        
         <img
             src={`http://localhost:8888/api/${url}/photo/${item._id}`}
             alt={item.name}
-            className="mb-3"
-            style={{ maxHeight: "100%", maxWidth: "100%" }}
+            className="img-thumbnail mb-3"
+            style={{ maxHeight: "100%", maxWidth: "100%", border: "none"}}
         />
+        
     </div>
 );
 

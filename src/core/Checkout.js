@@ -9,6 +9,7 @@ import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import "braintree-web";
 import DropIn from "braintree-web-drop-in-react";
+import { Card, Container } from "react-bootstrap";
 
 const Checkout = ({ products }) => {
   const [data, setData] = useState({
@@ -143,7 +144,7 @@ const Checkout = ({ products }) => {
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
-          <button onClick={buy} className="btn btn-success btn-block">
+          <button onClick={buy} style={{borderRadius: "5px" }} className="btn btn-success btn-block">
             Pay
           </button>
         </div>
@@ -173,13 +174,16 @@ const Checkout = ({ products }) => {
     loading && <h2 className="text-danger">Loading...</h2>;
 
   return (
-    <div>
+    <Card style={{border: 'none'}}>
+      <Container className="mt-3 mb-4">
       <h2>Total: ${getTotal()}</h2>
       {showLoading(data.loading)}
       {showSuccess(data.success)}
       {showError(data.error)}
       {showCheckout()}
-    </div>
+      </Container>
+    </Card>
+     
   );
 };
 

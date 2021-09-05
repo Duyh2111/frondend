@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth";
 import { itemTotal } from "./cartHelpers";
-import { Navbar, Nav, Form, FormControl, Button, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -12,11 +12,16 @@ const isActive = (history, path) => {
   }
 };
 
-
 const Menu = ({ history }) => (
-    
-  <Navbar bg="dark" expand="lg" variant="dark" className="justify-content-between">
-    <Navbar.Brand style={isActive(history, "/")} href="/">Second Hand</Navbar.Brand>
+  <Navbar
+    bg="dark"
+    expand="lg"
+    variant="dark"
+    className="justify-content-between"
+  >
+    <Navbar.Brand style={isActive(history, "/")} href="/">
+      Second Hand
+    </Navbar.Brand>
     <Navbar.Toggle aria-controls="navbarScroll" />
     <Navbar.Collapse id="navbarScroll">
       <Nav
@@ -27,7 +32,7 @@ const Menu = ({ history }) => (
         <Nav.Link style={isActive(history, "/shop")} href="/shop">
           Shop
         </Nav.Link>
-        
+
         {isAuthenticated() && isAuthenticated().user.role === 0 && (
           <Nav.Link
             style={isActive(history, "/user/dashboard")}
@@ -47,19 +52,9 @@ const Menu = ({ history }) => (
           </Nav.Link>
         )}
       </Nav>
-      <Form className="d-flex" style={{paddingRight: 150}}>
-        <FormControl
-          type="search"
-          placeholder="Search"
-          className="mr-2"
-          aria-label="Search"
-          style={{width: 400}}
-        />
-        <Button variant="outline-success" style={{borderRadius: 5}}>Search</Button>
-      </Form>
-      
+
       <Nav>
-      <Nav.Link style={isActive(history, "/cart")} href="/cart">
+        <Nav.Link style={isActive(history, "/cart")} href="/cart">
           Cart{" "}
           <sup>
             <small className="cart-badge">{itemTotal()}</small>
