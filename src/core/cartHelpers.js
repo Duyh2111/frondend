@@ -2,7 +2,6 @@ export const addItem = (item, next) => {
     let cart = [];
     if (typeof window !== "undefined") {
       if (localStorage.getItem("cart")) {
-  // Json.parse() to convert json to object json.stringify() to convert object to json
         cart = JSON.parse(localStorage.getItem("cart"));
       }
       cart.push({
@@ -46,7 +45,7 @@ export const addItem = (item, next) => {
   
       cart.map((product, i) => {
         if (product._id === productId) {
-          cart[i].count = count;
+          return cart[i].count = count;
         }
       });
   

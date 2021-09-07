@@ -13,7 +13,7 @@ const Cart = () => {
     setItems(getCart());
   }, [run]);
 
-  const showItems = (items) => {
+  const showProducts = (items) => {
     return (
       <div>
         <h2>Your cart has {`${items.length}`} items</h2>
@@ -22,9 +22,8 @@ const Cart = () => {
           <CardProduct
             key={i}
             product={product}
-            showAddToCartButton={false}
-            cartUpdate={true}
-            showRemoveProductButton={true}
+            quantity={true}
+            RemoveButton={true}
             setRun={setRun}
             run={run}
           />
@@ -33,7 +32,7 @@ const Cart = () => {
     );
   };
 
-  const noItemsMessage = () => (
+  const noItem = () => (
     <h2>
       Your cart is empty. <br /> <Link to="/shop">Continue shopping</Link>
     </h2>
@@ -43,7 +42,7 @@ const Cart = () => {
     <Layout className="container-fluid">
       <div className="row">
         <div className="col-6">
-          {items.length > 0 ? showItems(items) : noItemsMessage()}
+          {items.length > 0 ? showProducts(items) : noItem()}
         </div>
 
         <div className="col-6">

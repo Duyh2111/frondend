@@ -6,6 +6,7 @@ import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
 import Search from "./Search";
+
 import { Card, Container } from "react-bootstrap";
 
 const Shop = () => {
@@ -14,7 +15,7 @@ const Shop = () => {
   });
   const [categories, setCategories] = useState([]);
   const [setError] = useState(false);
-  const [limit] = useState(6);
+  const [limit] = useState(9);
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -30,7 +31,6 @@ const Shop = () => {
   };
 
   const loadFilteredResults = (newFilters) => {
-    // console.log(newFilters);
     getFilteredProducts(skip, limit, newFilters).then((data) => {
       if (data.error) {
         setError(data.error);

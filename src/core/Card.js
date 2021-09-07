@@ -6,10 +6,9 @@ import { addItem, updateItem, removeItem } from "./cartHelpers";
 import { Card, Row, Col, Button } from "react-bootstrap";
 const CardProduct = ({
   product,
-  showViewProductButton = true,
-  showAddToCartButton = true,
-  cartUpdate = false,
-  showRemoveProductButton = false,
+  seeDetail = true,
+  quantity = false,
+  RemoveButton = false,
   setRun = (f) => f,
   run = undefined,
   // changeCartSize
@@ -17,9 +16,9 @@ const CardProduct = ({
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
 
-  const showViewButton = (showViewProductButton) => {
+  const seeDetailButton = (seeDetail) => {
     return (
-      showViewProductButton && (
+      seeDetail && (
         <Link to={`/product/${product._id}`} className="mr-2">
           <Button variant="outline-secondary" style={{ borderRadius: "5px" }}>
             See detail
@@ -29,7 +28,6 @@ const CardProduct = ({
     );
   };
   const addToCart = () => {
-    // console.log('added');
     addItem(product, setRedirect(true));
   };
 
@@ -39,9 +37,9 @@ const CardProduct = ({
     }
   };
 
-  const showAddToCartBtn = (showAddToCartButton) => {
+  const showAddToCart = ( countInStock) => {
     return (
-      showAddToCartButton && (
+      countInStock > 0 ? (
         <Button
           onClick={addToCart}
           style={{ borderRadius: "5px" }}
@@ -49,29 +47,31 @@ const CardProduct = ({
         >
           Add to cart
         </Button>
+      ) : (
+        <div></div>
       )
     );
   };
 
-  const showStock = (quantity) => {
-    return quantity > 0 ? (
-      <p className="font-weight-bold text-warning">In Stock </p>
+  const showStock = (countInStock) => {
+    return countInStock > 0 ? (
+      <h6 className="font-weight-bold text-warning">In Stock </h6>
     ) : (
-      <p className="font-weight-bold text-danger">Out of Stock </p>
+      <h6 className="font-weight-bold text-danger">Out of Stock </h6>
     );
   };
 
   const handleChange = (productId) => (event) => {
-    setRun(!run); // run useEffect in parent Cart
+    setRun(!run); 
     setCount(event.target.value < 1 ? 1 : event.target.value);
     if (event.target.value >= 1) {
       updateItem(productId, event.target.value);
     }
   };
 
-  const showCartUpdateOptions = (cartUpdate) => {
+  const Quantity = (quantity) => {
     return (
-      cartUpdate && (
+      quantity && (
         <div>
           <div className="input-group mb-3">
             <div className="input-group-prepend">
@@ -88,9 +88,9 @@ const CardProduct = ({
       )
     );
   };
-  const showRemoveButton = (showRemoveProductButton) => {
+  const showRemoveButton = (RemoveButton) => {
     return (
-      showRemoveProductButton && (
+      RemoveButton && (
         <button
           onClick={() => {
             removeItem(product._id);
@@ -113,30 +113,28 @@ const CardProduct = ({
         <ShowImage item={product} url="product" />
         <Card.Title className="font-weight-bold">{product.name}</Card.Title>
         <Card.Text>
-          Category: {product.category && product.category.name}
-          <br />
-          <p className="d-inline-block text-truncate" style={{ maxWidth: '100% '}}>
+          <span
+            className="d-inline-block text-truncate"
+            style={{ maxWidth: "100% " }}
+          >
             {product.description}
-          </p>
+          </span>
           <Row>
-            <Col xs={6}>{showStock(product.quantity)}</Col>
+            <Col xs={6}>{showStock(product.countInStock)}</Col>
             <Col xs={6} className="text-right">
-              <h5>${product.price} </h5>
+              <h6 className="font-italic">${product.price} </h6>
             </Col>
           </Row>
-          <p className="font-italic font-weight-light">
-            Added on {moment(product.createdAt).fromNow()}
-          </p>
+         
         </Card.Text>
         <Row>
-          <Col xs={6}>{showViewButton(showViewProductButton)}</Col>
+          <Col xs={6}>{seeDetailButton(seeDetail)}</Col>
           <Col xs={6} className="text-right">
-            {showAddToCartBtn(showAddToCartButton)}
+            {showAddToCart(product.countInStock)}
           </Col>
         </Row>
-
-        {showRemoveButton(showRemoveProductButton)}
-        {showCartUpdateOptions(cartUpdate)}
+        {showRemoveButton(RemoveButton)}
+        {Quantity(quantity)}
       </Card.Body>
     </Card>
   );

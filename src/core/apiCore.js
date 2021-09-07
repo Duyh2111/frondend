@@ -4,8 +4,8 @@ export const getProducts = sortBy => {
     return fetch(`http://localhost:8888/api/products?sortBy=${sortBy}&order=desc&limit=8`, {
         method: "GET"
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
@@ -14,8 +14,8 @@ export const getCategories = () => {
     return fetch(`http://localhost:8888/api/categories`, {
         method: "GET"
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
@@ -34,8 +34,8 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
         },
         body: JSON.stringify(data)
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => {
             console.log(err);
@@ -48,8 +48,8 @@ export const list = params => {
     return fetch(`http://localhost:8888/api/products/search?${query}`, {
         method: "GET"
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
@@ -58,8 +58,8 @@ export const read = productId => {
     return fetch(`http://localhost:8888/api/product/${productId}`, {
         method: "GET"
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
@@ -68,8 +68,8 @@ export const listRelated = productId => {
     return fetch(`http://localhost:8888/api/products/related/${productId}`, {
         method: "GET"
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
@@ -83,13 +83,13 @@ export const getBraintreeClientToken = (userId, token) => {
             Authorization: `Bearer ${token}`
         }
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
 
-export const processPayment = (userId, token, paymentData) => {
+export const processPayment = (userId, token, payment) => {
     return fetch(`http://localhost:8888/api/braintree/payment/${userId}`, {
         method: "POST",
         headers: {
@@ -97,15 +97,15 @@ export const processPayment = (userId, token, paymentData) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(paymentData)
+        body: JSON.stringify(payment)
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };
 
-export const createOrder = (userId, token, createOrderData) => {
+export const createOrder = (userId, token, createOrder) => {
     return fetch(`http://localhost:8888/api/order/create/${userId}`, {
         method: "POST",
         headers: {
@@ -113,10 +113,10 @@ export const createOrder = (userId, token, createOrderData) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ order: createOrderData })
+        body: JSON.stringify({ order: createOrder})
     })
-        .then(response => {
-            return response.json();
+        .then(res => {
+            return res.json();
         })
         .catch(err => console.log(err));
 };

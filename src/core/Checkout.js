@@ -62,39 +62,24 @@ const Checkout = ({ products }) => {
 
   const buy = () => {
     setData({ loading: true });
-    // send the nonce to your server
-    // nonce = data.instance.requestPaymentMethod()
     let nonce;
     let getNonce = data.instance
       .requestPaymentMethod()
-      .then((data) => {
-        // console.log(data);
-        nonce = data.nonce;
-        // once you have nonce (card type, card number) send nonce as 'paymentMethodNonce'
-        // and also total to be charged
-        // console.log(
-        //     "send nonce and total to process: ",
-        //     nonce,
-        //     getTotal(products)
-        // );
+      .then((data) => {        
+        nonce = data.nonce;  
         const paymentData = {
           paymentMethodNonce: nonce,
           amount: getTotal(products),
         };
-
         processPayment(userId, token, paymentData)
           .then((response) => {
-            console.log(response);
-            // empty cart
-            // create order
-
+            console.log(response);     
             const createOrderData = {
               products: products,
               transaction_id: response.transaction.id,
               amount: response.transaction.amount,
               address: deliveryAddress,
             };
-
             createOrder(userId, token, createOrderData)
               .then((response) => {
                 emptyCart(() => {
@@ -116,7 +101,6 @@ const Checkout = ({ products }) => {
           });
       })
       .catch((error) => {
-        // console.log("dropin error: ", error);
         setData({ ...data, error: error.message });
       });
   };
@@ -125,7 +109,7 @@ const Checkout = ({ products }) => {
     <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken !== null && products.length > 0 ? (
         <div>
-          <div className="gorm-group mb-3">
+          <div className="form-group mb-3">
             <label className="text-muted">Delivery address:</label>
             <textarea
               onChange={handleAddress}
@@ -144,7 +128,11 @@ const Checkout = ({ products }) => {
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
-          <button onClick={buy} style={{borderRadius: "5px" }} className="btn btn-success btn-block">
+          <button
+            onClick={buy}
+            style={{ borderRadius: "5px" }}
+            className="btn btn-success btn-block"
+          >
             Pay
           </button>
         </div>
@@ -174,16 +162,15 @@ const Checkout = ({ products }) => {
     loading && <h2 className="text-danger">Loading...</h2>;
 
   return (
-    <Card style={{border: 'none'}}>
+    <Card style={{ border: "none" }}>
       <Container className="mt-3 mb-4">
-      <h2>Total: ${getTotal()}</h2>
-      {showLoading(data.loading)}
-      {showSuccess(data.success)}
-      {showError(data.error)}
-      {showCheckout()}
+        <h2>Total: ${getTotal()}</h2>
+        {showLoading(data.loading)}
+        {showSuccess(data.success)}
+        {showError(data.error)}
+        {showCheckout()}
       </Container>
     </Card>
-     
   );
 };
 

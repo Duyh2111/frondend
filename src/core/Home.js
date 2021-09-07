@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import { getProducts } from "./apiCore";
 import Card from "./Card";
 import Search from "./Search";
-import ControlledCarousel from "./Carousel"
+import ControlledCarousel from "./Carousel";
 const Home = () => {
   const [productsBySell, setProductsBySell] = useState([]);
   const [productsByArrival, setProductsByArrival] = useState([]);
@@ -36,26 +36,24 @@ const Home = () => {
 
   return (
     <Layout>
-        <ControlledCarousel/> <br />
-        <Search />
-        <h2 className="mb-4">Lasted Products</h2>
-        <div className="row">
-          {productsByArrival.map((product, i) => (
-            <div key={i} className="col-3 mb-3">
-              <Card product={product} />
-            </div>
-          ))}
-        </div>
-
-        <h2 className="mb-4">Best Sellers</h2>
-        <div className="row">
-          {productsBySell.map((product, i) => (
-            <div key={i} className="col-3 mb-3">
-              <Card product={product} />
-            </div>
-          ))}
-        </div>
-      
+      <ControlledCarousel /> <br />
+      <Search />
+      <h2 className="mb-4">Lasted Products</h2>
+      <div className="row">
+        {productsByArrival.map((product, i) => (
+          <div key={i} className="col-3 mb-3">
+            <Card product={product} />
+          </div>
+        ))}
+      </div>
+      <h2 className="mb-4">Best Sellers</h2>
+      <div className="row">
+        {productsBySell.map((product, i) => (
+          <div key={i} className="col-3 mb-3">
+            <Card product={product} />
+          </div>
+        ))}
+      </div>
     </Layout>
   );
 };
