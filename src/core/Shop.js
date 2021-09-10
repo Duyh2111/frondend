@@ -6,8 +6,7 @@ import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
 import Search from "./Search";
-
-import { Card, Container } from "react-bootstrap";
+import { Card, Container, Row, Col } from "react-bootstrap";
 
 const Shop = () => {
   const [myFilters, setMyFilters] = useState({
@@ -99,42 +98,44 @@ const Shop = () => {
 
   return (
     <Layout>
-      <div className="row">
-        <div className="col-3">
-          <Card style={{border: 'none'}}>
-            <Container  className="mt-4 ml-2 mb-4">
-          <h4>Filter by categories</h4>
-          <ul>
-            <Checkbox
-              categories={categories}
-              handleFilters={(filters) => handleFilters(filters, "category")}
-            />
-          </ul>
-          <h4>Filter by price range</h4>
-          <div>
-            <RadioBox
-              prices={prices}
-              handleFilters={(filters) => handleFilters(filters, "price")}
-            />
-          </div>
-          </Container>
+      <Row>
+        <Col lg={3}>
+          <Card style={{ border: "none" }}>
+            <Container className="mt-4 ml-2 mb-4">
+              <h4>Filter by categories</h4>
+              <ul>
+                <Checkbox
+                  categories={categories}
+                  handleFilters={(filters) =>
+                    handleFilters(filters, "category")
+                  }
+                />
+              </ul>
+              <h4>Filter by price range</h4>
+              <div>
+                <RadioBox
+                  prices={prices}
+                  handleFilters={(filters) => handleFilters(filters, "price")}
+                />
+              </div>
+            </Container>
           </Card>
-        </div>
+        </Col>
 
-        <div className="col-9">
+        <Col lg={9}>
           <Search />
           <h2 className="mb-3">Products</h2>
-          <div className="row">
+          <Row xs={1} md={2} lg={3}>
             {filteredResults.map((product, i) => (
-              <div key={i} className="col-4 mb-3">
+              <Col key={i} className="mb-3">
                 <CardProduct product={product} />
-              </div>
+              </Col>
             ))}
-          </div>
+          </Row>
           <hr />
           {loadMoreButton()}
-        </div>
-      </div>
+        </Col>
+      </Row>
     </Layout>
   );
 };

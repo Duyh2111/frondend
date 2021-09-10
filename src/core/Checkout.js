@@ -65,15 +65,15 @@ const Checkout = ({ products }) => {
     let nonce;
     let getNonce = data.instance
       .requestPaymentMethod()
-      .then((data) => {        
-        nonce = data.nonce;  
+      .then((data) => {
+        nonce = data.nonce;
         const paymentData = {
           paymentMethodNonce: nonce,
           amount: getTotal(products),
         };
         processPayment(userId, token, paymentData)
           .then((response) => {
-            console.log(response);     
+            console.log(response);
             const createOrderData = {
               products: products,
               transaction_id: response.transaction.id,

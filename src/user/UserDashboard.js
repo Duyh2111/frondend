@@ -4,6 +4,7 @@ import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { getPurchaseHistory } from "./apiUser";
 import moment from "moment";
+import Table from "react-bootstrap/Table";
 
 const Dashboard = () => {
   const [history, setHistory] = useState([]);
@@ -74,12 +75,24 @@ const Dashboard = () => {
                   <hr />
                   {h.products.map((p, i) => {
                     return (
-                      <div key={i}>
-                        <h5>Order ID: {p._id}</h5>
-                        <h6>Product name: {p.name}</h6>
-                        <h6>Product price: {p.price}</h6>
-                        <h6>Purchased date: {moment(p.createdAt).fromNow()}</h6>
-                      </div>
+                      <Table  key={i} >
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Product Name</th>
+                            <th>Product Price</th>
+                            <th>Purchased Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{p._id}</td>
+                            <td>{p.name}</td>
+                            <td>{p.price}</td>
+                            <td>{moment(p.createdAt).format}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
                     );
                   })}
                 </div>

@@ -14,6 +14,7 @@ const Product = (props) => {
   const [setError] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
+
   const loadSingleProduct = (productId) => {
     read(productId).then((data) => {
       if (data.error) {

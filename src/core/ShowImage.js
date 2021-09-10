@@ -6,7 +6,7 @@ const ShowImage = ({ item, url }) => (
         <img
             src={`http://localhost:8888/api/${url}/photo/${item._id}`}
             alt={item.name}
-            className="img-thumbnail mb-3"
+            className="img-thumbnail"
             style={{ maxHeight: "100%", maxWidth: "100%", border: "none"}}
         />
         

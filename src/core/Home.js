@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { getProducts } from "./apiCore";
-import Card from "./Card";
+import CardProduct from "./Card";
 import Search from "./Search";
 import ControlledCarousel from "./Carousel";
+import { Row, Col } from "react-bootstrap";
+
 const Home = () => {
   const [productsBySell, setProductsBySell] = useState([]);
   const [productsByArrival, setProductsByArrival] = useState([]);
@@ -39,21 +41,21 @@ const Home = () => {
       <ControlledCarousel /> <br />
       <Search />
       <h2 className="mb-4">Lasted Products</h2>
-      <div className="row">
+      <Row xs={2} md={2} lg={3} xl={5}>
         {productsByArrival.map((product, i) => (
-          <div key={i} className="col-3 mb-3">
-            <Card product={product} />
-          </div>
+          <Col key={i} className="mb-3">
+            <CardProduct product={product} />
+          </Col>
         ))}
-      </div>
+      </Row>
       <h2 className="mb-4">Best Sellers</h2>
-      <div className="row">
+      <Row xs={2} md={3} lg={4}>
         {productsBySell.map((product, i) => (
-          <div key={i} className="col-3 mb-3">
-            <Card product={product} />
-          </div>
+          <Col key={i} className="mb-3">
+            <CardProduct product={product} />
+          </Col>
         ))}
-      </div>
+      </Row>
     </Layout>
   );
 };

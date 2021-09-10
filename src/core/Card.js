@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import ShowImage from "./ShowImage";
-import moment from "moment";
 import { addItem, updateItem, removeItem } from "./cartHelpers";
 import { Card, Row, Col, Button } from "react-bootstrap";
 const CardProduct = ({
   product,
-  seeDetail = true,
   quantity = false,
   RemoveButton = false,
   setRun = (f) => f,
@@ -16,17 +14,6 @@ const CardProduct = ({
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
 
-  const seeDetailButton = (seeDetail) => {
-    return (
-      seeDetail && (
-        <Link to={`/product/${product._id}`} className="mr-2">
-          <Button variant="outline-secondary" style={{ borderRadius: "5px" }}>
-            See detail
-          </Button>
-        </Link>
-      )
-    );
-  };
   const addToCart = () => {
     addItem(product, setRedirect(true));
   };
@@ -37,19 +24,17 @@ const CardProduct = ({
     }
   };
 
-  const showAddToCart = ( countInStock) => {
-    return (
-      countInStock > 0 ? (
-        <Button
-          onClick={addToCart}
-          style={{ borderRadius: "5px" }}
-          variant="outline-warning"
-        >
-          Add to cart
-        </Button>
-      ) : (
-        <div></div>
-      )
+  const showAddToCart = (countInStock) => {
+    return countInStock > 0 ? (
+      <Button
+        onClick={addToCart}
+        style={{ borderRadius: "5px" }}
+        variant="outline-warning"
+      >
+        Add to cart
+      </Button>
+    ) : (
+      <div></div>
     );
   };
 
@@ -62,7 +47,7 @@ const CardProduct = ({
   };
 
   const handleChange = (productId) => (event) => {
-    setRun(!run); 
+    setRun(!run);
     setCount(event.target.value < 1 ? 1 : event.target.value);
     if (event.target.value >= 1) {
       updateItem(productId, event.target.value);
@@ -72,10 +57,10 @@ const CardProduct = ({
   const Quantity = (quantity) => {
     return (
       quantity && (
-        <div>
+        <div className="col-3">
           <div className="input-group mb-3">
             <div className="input-group-prepend">
-              <span className="input-group-text">Adjust Quantity</span>
+              <span className="input-group-text">Quantity</span>
             </div>
             <input
               type="number"
@@ -105,13 +90,25 @@ const CardProduct = ({
   };
   return (
     <Card
-      className="shadow p-3 bg-white"
-      style={{ border: "none", borderRadius: "8px" }}
+      className="shadow bg-white"
+      style={{ border: "none", borderRadius: "10px" }}
     >
+      <Card.Header
+        style={{
+          backgroundColor: "white",
+          border: "1px solid #f6f6f6",
+          borderRadius: "10px",
+        }}
+      >
+        <ShowImage item={product} url="product" />
+      </Card.Header>
       <Card.Body>
         {shouldRedirect(redirect)}
-        <ShowImage item={product} url="product" />
-        <Card.Title className="font-weight-bold">{product.name}</Card.Title>
+        <Card.Title >
+          <Link className="d-inline-block text-truncate" style={{maxWidth: "100% ",color: "black", fontSize: "18px", textDecoration: "none"}} to={`/product/${product._id}`}>
+            {product.name}
+          </Link>
+        </Card.Title>
         <Card.Text>
           <span
             className="d-inline-block text-truncate"
@@ -120,19 +117,13 @@ const CardProduct = ({
             {product.description}
           </span>
           <Row>
-            <Col xs={6}>{showStock(product.countInStock)}</Col>
-            <Col xs={6} className="text-right">
-              <h6 className="font-italic">${product.price} </h6>
+            <Col xs={7}>{showStock(product.countInStock)}</Col>
+            <Col xs={5} className="text-right">
+              <h6 className="font-italic">${product.price}</h6>
             </Col>
+            <Col xl={12}>{showAddToCart(product.countInStock)}</Col>
           </Row>
-         
         </Card.Text>
-        <Row>
-          <Col xs={6}>{seeDetailButton(seeDetail)}</Col>
-          <Col xs={6} className="text-right">
-            {showAddToCart(product.countInStock)}
-          </Col>
-        </Row>
         {showRemoveButton(RemoveButton)}
         {Quantity(quantity)}
       </Card.Body>
