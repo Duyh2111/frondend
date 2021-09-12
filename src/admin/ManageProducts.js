@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import Table from "react-bootstrap/Table";
 import { getProducts, deleteProduct } from "./apiAdmin";
 
 const ManageProducts = () => {
@@ -34,25 +35,28 @@ const ManageProducts = () => {
   }, []);
 
   return (
-    <Layout
-      title="Manage Products"
-      description="Perform CRUD on products"
-      className="container-fluid"
-    >
-      <div className="row">
-        <div className="col-12">
-          <h2 className="text-center">Total {products.length} products</h2>
-          <br />
-          <ul className="list-group">
-            {products.map((p, i) => (
-              <li
-                key={i}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <strong>{p.name}</strong>
+    <Layout className="container-fluid">
+      <h2 className="text-center">Total {products.length} products</h2>
+      <Table   hover size="sm" className="text-xs-center text-lg-center">
+        <thead>
+          <tr>
+            <th className="text-left">Product name</th>
+            <th>Product price</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((p, i) => (
+            <tr key={i}>
+              <td className="text-left">{p.name}</td>              
+              <td>${p.price}</td>
+              <td>
                 <Link to={`/admin/product/update/${p._id}`}>
                   <span className="badge badge-warning badge-pill">Update</span>
                 </Link>
+              </td>
+              <td>
                 <button
                   onClick={() => destroy(p._id)}
                   className="badge badge-danger badge-pill"
@@ -60,14 +64,15 @@ const ManageProducts = () => {
                 >
                   Delete
                 </button>
-              </li>
-            ))}
-          </ul>
-          <br />
-        </div>
-      </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </Layout>
   );
 };
 
 export default ManageProducts;
+
+

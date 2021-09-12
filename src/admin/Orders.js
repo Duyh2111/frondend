@@ -38,9 +38,7 @@ const Orders = () => {
 
   const showOrdersLength = () => {
     if (orders.length > 0) {
-      return (
-        <h4 className=" display-2">Total orders: {orders.length}</h4>
-      );
+      return <h4 className=" display-2">Total orders: {orders.length}</h4>;
     } else {
       return <h4 className="text-danger">No orders</h4>;
     }
@@ -80,11 +78,7 @@ const Orders = () => {
           {showOrdersLength()}
           {orders.map((o, oIndex) => {
             return (
-              <Table
-                bordered
-                key={oIndex}
-                style={{ backgroundColor: "#ffffff" }}
-              >
+              <Table hover size="sm" key={oIndex} style={{ backgroundColor: "#ffffff" }}>
                 <thead>
                   <tr>
                     <th>Order ID</th>
