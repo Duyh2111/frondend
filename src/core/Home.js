@@ -49,7 +49,7 @@ const Home = () => {
         ))}
       </Row>
       <h2 className="mb-4">Best Sellers</h2>
-      <Row xs={2} md={3} lg={4}>
+      <Row xs={2} md={2} lg={3} xl={5}>
         {productsBySell.map((product, i) => (
           <Col key={i} className="mb-3">
             <CardProduct product={product} />

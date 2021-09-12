@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { Link, Redirect } from "react-router-dom";
-import { read, listRelated } from "./apiCore";
+import { read, listCategoryRelated, listBranchRelated } from "./apiCore";
 import CardProduct from "./Card";
 import moment from "moment";
 import ShowImage from "./ShowImage";
@@ -10,23 +10,40 @@ import { Card, Row, Col, Container, Button } from "react-bootstrap";
 
 const Product = (props) => {
   const [product, setProduct] = useState({});
-  const [relatedProduct, setRelatedProduct] = useState([]);
+  const [relatedCategoryProduct, setRelatedCategoryProduct] = useState([]);
+  const [relatedBranchProduct, setRelatedBranchProduct] = useState([]);
   const [setError] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
 
-  const loadSingleProduct = (productId) => {
+  const loadSingleCategoryProduct = (productId) => {
     read(productId).then((data) => {
       if (data.error) {
         setError(data.error);
       } else {
-        setProduct(data);
-        // fetch related products
-        listRelated(data._id).then((data) => {
+        setProduct(data);        
+        listCategoryRelated(data._id).then((data) => {
           if (data.error) {
             setError(data.error);
           } else {
-            setRelatedProduct(data);
+            setRelatedCategoryProduct(data);
+          }
+        });
+      }
+    });
+  };
+
+  const loadSingleBranchProduct = (productId) => {
+    read(productId).then((data1) => {
+      if (data1.error) {
+        setError(data1.error);
+      } else {
+        setProduct(data1);        
+        listBranchRelated(data1._id).then((data1) => {
+          if (data1.error) {
+            setError(data1.error);
+          } else {
+            setRelatedBranchProduct(data1);
           }
         });
       }
@@ -67,7 +84,8 @@ const Product = (props) => {
 
   useEffect(() => {
     const productId = props.match.params.productId;
-    loadSingleProduct(productId);
+    loadSingleCategoryProduct(productId);
+    loadSingleBranchProduct(productId);
   }, [props]);
 
   return (
@@ -83,7 +101,7 @@ const Product = (props) => {
           <Row className="col-5 pr-20" style={{ paddingRight: 70 }}>
             <Card.Text>
               <h4 className="font-weight-bold">{product.name}</h4>
-              <h5>Category: {product.category && product.category.name}</h5>
+              <h5>Category: {product.category && product.category.name}</h5>              
               <p>{product.description}</p>
               <span className="font-italic font-weight-light">
             Added on {moment(product.createdAt).fromNow()}
@@ -125,9 +143,22 @@ const Product = (props) => {
         <Container>
           <h4 style={{ marginTop: 20, marginBottom: 20 }}>Related products</h4>
           <div className="row">
-            {relatedProduct.map((p, i) => (
+            {relatedCategoryProduct.map((p, i) => (
               <div key={i} className="col-3 mb-3">
                 <CardProduct product={p} />
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Card>
+      <br/>
+      <Card style={{ border: "none" }}>
+        <Container>
+          <h4 style={{ marginTop: 20, marginBottom: 20 }}>Related products</h4>
+          <div className="row">
+            {relatedBranchProduct.map((c, a) => (
+              <div key={a} className="col-3 mb-3">
+                <CardProduct product={c} />
               </div>
             ))}
           </div>

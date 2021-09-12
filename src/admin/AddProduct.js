@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
-import { createProduct, getCategories } from "./apiAdmin";
+import { createProduct, getCategories, getBranches } from "./apiAdmin";
 
 const AddProduct = () => {
   const [values, setValues] = useState({
@@ -9,6 +9,8 @@ const AddProduct = () => {
     description: "",
     price: "",
     categories: [],
+    branches: [],
+    Branch: "",
     category: "",
     shipping: "",
     countInStock: "",
@@ -26,6 +28,7 @@ const AddProduct = () => {
     description,
     price,
     categories,
+    branches,
     category,
     shipping,
     countInStock,
@@ -51,8 +54,23 @@ const AddProduct = () => {
     });
   };
 
+  const init1 = () => {
+    getBranches().then((data1) => {
+      if (data1.error) {
+        setValues({ ...values, error: data1.error });
+      } else {
+        setValues({
+          ...values,
+          branches: data1,
+          formData: new FormData(),
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     init();
+    init1();
   }, []);
 
   const handleChange = (name) => (event) => {
@@ -65,9 +83,10 @@ const AddProduct = () => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
 
-    createProduct(user._id, token, formData).then((data) => {
+    createProduct(user._id, token, formData).then((data, data1) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
+        setValues({ ...values, error: data1.error });
       } else {
         setValues({
           ...values,
@@ -132,6 +151,19 @@ const AddProduct = () => {
           <option>Please select</option>
           {categories &&
             categories.map((c, i) => (
+              <option key={i} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Branch</label>
+        <select onChange={handleChange("branch")} className="form-control">
+          <option>Please select</option>
+          {branches &&
+            branches.map((c, i) => (
               <option key={i} value={c._id}>
                 {c.name}
               </option>

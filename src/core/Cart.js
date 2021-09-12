@@ -9,7 +9,7 @@ import CardProduct from "./Card";
 const Cart = () => {
   const [items, setItems] = useState([]);
   const [run, setRun] = useState(false);
-  
+
   useEffect(() => {
     setItems(getCart());
   }, [run]);
@@ -45,33 +45,34 @@ const Cart = () => {
       <Row>
         <Col lg={8} className="text-xs-center text-lg-center">
           {items.length > 0 ? showProducts(items) : noItem()}
-          
+
         </Col>
         <Col lg={4}>
-          <h2>Your cart summary</h2>          
+          <h2>Your cart summary</h2>
           <hr />
           <Checkout products={items} setRun={setRun} run={run} />
         </Col>
-      </Row>      
+      </Row>
     </Layout>
   );
 };
 
 export default Cart;
 
-// {items.map((product, i) => (
-//   <div key={i} >
-//     <Card className="mb-3" style={{border: "none"}} >
-//       <Row>
-//         <Col xs={2} >
-//           <ShowImage item={product} url="product" />
-//         </Col>
-//         <Col style={{display: 'flex', justifyContent:'center', alignItems:'center',}} xs={2}>{product.name}</Col>
-//         <Col style={{display: 'flex', justifyContent:'center', alignItems:'center',}} xs={2}>${product.price}</Col>
-//         <Col style={{display: 'flex', justifyContent:'center', alignItems:'center',}} sx={2}>{showRemoveButton(RemoveButton)}</Col>
-//         <CardProduct key={i} RemoveButton={true} setRun={setRun}
-//     run={run}/>
-//       </Row>
-//     </Card>
-//   </div>
-// ))}
+// // {items.map((product, i) => (
+// //   <div key={i} >
+// //     <Card className="mb-3" style={{border: "none"}} >
+// //       <Row>
+// //         <Col xs={2} >
+// //           <ShowImage item={product} url="product" />
+// //         </Col>
+// //         <Col style={{display: 'flex', justifyContent:'center', alignItems:'center',}} xs={2}>{product.name}</Col>
+// //         <Col style={{display: 'flex', justifyContent:'center', alignItems:'center',}} xs={2}>${product.price}</Col>
+// //         <Col style={{display: 'flex', justifyContent:'center', alignItems:'center',}} sx={2}>{showRemoveButton(RemoveButton)}</Col>
+// //         <CardProduct key={i} RemoveButton={true} setRun={setRun}
+// //     run={run}/>
+// //       </Row>
+// //     </Card>
+// //   </div>
+// // ))}
+

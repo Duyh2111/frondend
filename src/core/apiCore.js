@@ -20,6 +20,16 @@ export const getCategories = () => {
         .catch(err => console.log(err));
 };
 
+export const getBranches = () => {
+    return fetch(`http://localhost:8888/api/branches`, {
+        method: "GET"
+    })
+        .then(res => {
+            return res.json();
+        })
+        .catch(err => console.log(err));
+};
+
 export const getFilteredProducts = (skip, limit, filters = {}) => {
     const data = {
         limit,
@@ -64,8 +74,18 @@ export const read = productId => {
         .catch(err => console.log(err));
 };
 
-export const listRelated = productId => {
-    return fetch(`http://localhost:8888/api/products/related/${productId}`, {
+export const listCategoryRelated = productId => {
+    return fetch(`http://localhost:8888/api/products/relatedCategory/${productId}`, {
+        method: "GET"
+    })
+        .then(res => {
+            return res.json();
+        })
+        .catch(err => console.log(err));
+};
+
+export const listBranchRelated = productId => {
+    return fetch(`http://localhost:8888/api/products/relatedBranch/${productId}`, {
         method: "GET"
     })
         .then(res => {

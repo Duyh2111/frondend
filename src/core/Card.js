@@ -107,6 +107,7 @@ const CardProduct = ({
         <Card.Title >
           <Link className="d-inline-block text-truncate" style={{maxWidth: "100% ",color: "black", fontSize: "18px", textDecoration: "none"}} to={`/product/${product._id}`}>
             {product.name}
+            
           </Link>
         </Card.Title>
         <Card.Text>

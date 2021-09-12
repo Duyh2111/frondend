@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import CardProduct from "./Card";
-import { getCategories, getFilteredProducts } from "./apiCore";
+import { getCategories, getFilteredProducts, getBranches } from "./apiCore";
 import Checkbox from "./Checkbox";
+import CheckboxBranch from "./checkboxBranch";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
 import Search from "./Search";
@@ -10,9 +11,10 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 
 const Shop = () => {
   const [myFilters, setMyFilters] = useState({
-    filters: { category: [], price: [] },
+    filters: { category: [], price: [], branch: [] },
   });
   const [categories, setCategories] = useState([]);
+  const [branches, setBranches] = useState([]);
   const [setError] = useState(false);
   const [limit] = useState(9);
   const [skip, setSkip] = useState(0);
@@ -25,6 +27,16 @@ const Shop = () => {
         setError(data.error);
       } else {
         setCategories(data);
+      }
+    });
+  };
+
+  const init1 = () => {
+    getBranches().then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setBranches(data);
       }
     });
   };
@@ -68,6 +80,7 @@ const Shop = () => {
 
   useEffect(() => {
     init();
+    init1();
     loadFilteredResults(skip, limit, myFilters.filters);
   }, []);
 
@@ -108,6 +121,15 @@ const Shop = () => {
                   categories={categories}
                   handleFilters={(filters) =>
                     handleFilters(filters, "category")
+                  }
+                />
+              </ul>
+              <h4>Filter by branches</h4>
+              <ul>
+                <Checkbox
+                  categories={branches}
+                  handleFilters={(filters) =>
+                    handleFilters(filters, "branch")
                   }
                 />
               </ul>
