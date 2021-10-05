@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { read, listCategoryRelated, listBranchRelated } from "./apiCore";
 import CardProduct from "./Card";
 import moment from "moment";
@@ -12,7 +12,7 @@ const Product = (props) => {
   const [product, setProduct] = useState({});
   const [relatedCategoryProduct, setRelatedCategoryProduct] = useState([]);
   const [relatedBranchProduct, setRelatedBranchProduct] = useState([]);
-  const [setError] = useState(false);
+  const [error, setError] = useState(false);
   const [redirect, setRedirect] = useState(false);
 
 
@@ -86,7 +86,7 @@ const Product = (props) => {
     const productId = props.match.params.productId;
     loadSingleCategoryProduct(productId);
     loadSingleBranchProduct(productId);
-  }, [props]);
+  }, []);
 
   return (
     <Layout>
@@ -154,7 +154,7 @@ const Product = (props) => {
       <br/>
       <Card style={{ border: "none" }}>
         <Container>
-          <h4 style={{ marginTop: 20, marginBottom: 20 }}>Related products</h4>
+          <h4 style={{ marginTop: 20, marginBottom: 20 }}>Related branches</h4>
           <div className="row">
             {relatedBranchProduct.map((c, a) => (
               <div key={a} className="col-3 mb-3">
@@ -163,7 +163,7 @@ const Product = (props) => {
             ))}
           </div>
         </Container>
-      </Card>
+      </Card> 
     </Layout>
   );
 };

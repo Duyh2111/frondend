@@ -8,7 +8,6 @@ import Table from "react-bootstrap/Table";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [statusValues, setStatusValues] = useState([]);
-
   const { user, token } = isAuthenticated();
 
   const loadOrders = () => {
@@ -78,12 +77,17 @@ const Orders = () => {
           {showOrdersLength()}
           {orders.map((o, oIndex) => {
             return (
-              <Table hover size="sm" key={oIndex} style={{ backgroundColor: "#ffffff" }}>
+              <Table
+                hover
+                className="shadow"
+                size="sm"
+                key={oIndex}
+                style={{ backgroundColor: "#ffffff" }}
+              >
                 <thead>
                   <tr>
                     <th>Order ID</th>
                     <th>Status</th>
-                    <th>Transaction ID</th>
                     <th>Amount</th>
                     <th>Ordered by</th>
                     <th>Ordered on</th>
@@ -94,7 +98,6 @@ const Orders = () => {
                   <tr>
                     <td>{o._id}</td>
                     <td>{showStatus(o)}</td>
-                    <td>{o.transaction_id}</td>
                     <td>${o.amount}</td>
                     <td>{o.user.name}</td>
                     <td>{moment(o.createdAt).fromNow()}</td>

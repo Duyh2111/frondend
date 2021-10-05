@@ -51,13 +51,13 @@ const Dashboard = () => {
   const userInfo = () => {
     return (
       <div className="card mb-5">
-        <h3 className="card-header">User Information</h3>
+        <h3 className="card-header">
+          {role === 1 ? "Admin Information" : "User Information"}
+        </h3>
         <ul className="list-group">
           <li className="list-group-item">{name}</li>
           <li className="list-group-item">{email}</li>
-          <li className="list-group-item">
-            {role === 1 ? "Admin" : "Registered User"}
-          </li>
+          <li className="list-group-item">{role === 1 ? "Admin" : "User"}</li>
         </ul>
       </div>
     );
@@ -65,42 +65,43 @@ const Dashboard = () => {
 
   const purchaseHistory = (history) => {
     return (
-      <div className="card mb-5">
+      <div>
         <h3 className="card-header">Purchase history</h3>
         <ul className="list-group">
           <li className="list-group-item">
             {history.map((h, i) => {
               return (
                 <div>
-                  <hr />
-                  {h.products.map((p, i) => {
-                    return (
-                      <Table  key={i} >
-                        <thead>
-                          <tr>
-                            <th>Order ID</th>
-                            <th>Product Name</th>
-                            <th>Product Price</th>
-                            <th>Purchased Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>{p._id}</td>
-                            <td>{p.name}</td>
-                            <td>{p.price}</td>
-                            <td>{moment(p.createdAt).format}</td>
-                          </tr>
-                        </tbody>
-                      </Table>
-                    );
-                  })}
+                  <Table hover key={i} size="sm" className="text-xs-center text-lg-center">
+                  <thead>
+                    <tr>
+                      <th className="text-left">Order ID</th>
+                      <th >Product Name</th>
+                      <th >Product Price</th>
+                      <th >Quantity</th>                      
+                      <th>Address</th>
+                      <th>Purchased Date</th>
+                    </tr>
+                    </thead>
+                    {h.products.map((p, pIndex) => (
+                      <tr key={pIndex}>
+                        <td className="text-left">{h._id}</td>                        
+                        <td>{p.name}</td>
+                        <td>{p.price}</td>
+                        <td>{p.count}</td>
+                        <td>{h.address}</td>
+                        <td>{moment(p.createdAt).fromNow()}</td>
+                      </tr>
+                      
+                    ))}
+                    <br />
+                  </Table>
                 </div>
               );
             })}
           </li>
         </ul>
-      </div>
+        </div>
     );
   };
 

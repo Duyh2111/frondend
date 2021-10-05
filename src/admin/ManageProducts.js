@@ -41,7 +41,7 @@ const ManageProducts = () => {
         <thead>
           <tr>
             <th className="text-left">Product name</th>
-            <th>Product price</th>
+            <th className="text-left">Product price</th>
             <th>Update</th>
             <th>Delete</th>
           </tr>
@@ -50,7 +50,7 @@ const ManageProducts = () => {
           {products.map((p, i) => (
             <tr key={i}>
               <td className="text-left">{p.name}</td>              
-              <td>${p.price}</td>
+              <td className="text-left">${p.price}</td>
               <td>
                 <Link to={`/admin/product/update/${p._id}`}>
                   <span className="badge badge-warning badge-pill">Update</span>

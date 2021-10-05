@@ -9,16 +9,14 @@ const AddProduct = () => {
     description: "",
     price: "",
     categories: [],
-    branches: [],
-    Branch: "",
     category: "",
-    shipping: "",
+    branches: [],
+    branch: "",
     countInStock: "",
     photo: "",
     loading: false,
     error: "",
     createdProduct: "",
-    redirectToProfile: false,
     formData: "",
   });
 
@@ -29,48 +27,30 @@ const AddProduct = () => {
     price,
     categories,
     branches,
-    category,
-    shipping,
     countInStock,
     loading,
     error,
     createdProduct,
-    redirectToProfile,
     formData,
   } = values;
 
-  // load categories and set form data
-  const init = () => {
-    getCategories().then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          ...values,
-          categories: data,
-          formData: new FormData(),
-        });
-      }
-    });
-  };
-
-  const init1 = () => {
-    getBranches().then((data1) => {
-      if (data1.error) {
-        setValues({ ...values, error: data1.error });
-      } else {
-        setValues({
-          ...values,
-          branches: data1,
-          formData: new FormData(),
-        });
-      }
+  let init = async () => {
+    const categoryData = await getCategories();
+    if (categoryData.error)
+      return setValues({ ...values, error: categoryData.error });
+    const branchData = await getBranches();
+    if (branchData.error)
+      return setValues({ ...values, error: branchData.error });
+    setValues({
+      ...values,
+      branches: branchData,
+      categories: categoryData,
+      formData: new FormData(),
     });
   };
 
   useEffect(() => {
     init();
-    init1();
   }, []);
 
   const handleChange = (name) => (event) => {
@@ -83,10 +63,9 @@ const AddProduct = () => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
 
-    createProduct(user._id, token, formData).then((data, data1) => {
+    createProduct(user._id, token, formData).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
-        setValues({ ...values, error: data1.error });
       } else {
         setValues({
           ...values,
@@ -172,15 +151,6 @@ const AddProduct = () => {
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Shipping</label>
-        <select onChange={handleChange("shipping")} className="form-control">
-          <option>Please select</option>
-          <option value="0">No</option>
-          <option value="1">Yes</option>
-        </select>
-      </div>
-
-      <div className="form-group">
         <label className="text-muted">Count In Stock</label>
         <input
           onChange={handleChange("countInStock")}
@@ -199,7 +169,7 @@ const AddProduct = () => {
       className="alert alert-danger"
       style={{ display: error ? "" : "none" }}
     >
-      {error}
+      Name is already existed
     </div>
   );
 
@@ -220,10 +190,7 @@ const AddProduct = () => {
     );
 
   return (
-    <Layout
-      title="Add a new product"
-      description={`G'day ${user.name}, ready to add a new product?`}
-    >
+    <Layout>
       <div className="row">
         <div className="col-md-8 offset-md-2">
           {showLoading()}

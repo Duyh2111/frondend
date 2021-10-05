@@ -7,6 +7,7 @@ const CardProduct = ({
   product,
   quantity = false,
   RemoveButton = false,
+  countInStock = true,
   setRun = (f) => f,
   run = undefined,
   // changeCartSize
@@ -122,7 +123,7 @@ const CardProduct = ({
             <Col xs={5} className="text-right">
               <h6 className="font-italic">${product.price}</h6>
             </Col>
-            <Col xl={12}>{showAddToCart(product.countInStock)}</Col>
+            <Col xl={12}>{showAddToCart(countInStock)}</Col>
           </Row>
         </Card.Text>
         {showRemoveButton(RemoveButton)}
