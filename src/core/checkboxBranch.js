@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
 const CheckboxBranch = ({ branches, handleFilters }) => {
-  const [checked, setCheked] = useState([]);
+  const [checked, setChecked] = useState([]);
 
   const handleToggle = (c) => () => {
-
     const currentBranchId = checked.indexOf(c);
     const newCheckedBranchId = [...checked];
     if (currentBranchId === -1) {
@@ -12,8 +11,8 @@ const CheckboxBranch = ({ branches, handleFilters }) => {
     } else {
       newCheckedBranchId.splice(currentBranchId, 1);
     }
-    
-    setCheked(newCheckedBranchId);
+
+    setChecked(newCheckedBranchId);
     handleFilters(newCheckedBranchId);
   };
 
@@ -31,5 +30,3 @@ const CheckboxBranch = ({ branches, handleFilters }) => {
 };
 
 export default CheckboxBranch;
-
-

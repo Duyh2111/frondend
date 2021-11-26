@@ -24,14 +24,10 @@ const Checkout = ({ products }) => {
   const userId = isAuthenticated() && isAuthenticated().user._id;
   const token = isAuthenticated() && isAuthenticated().token;
 
-  const getToken = (userId, token) => {
-    getBraintreeClientToken(userId, token).then((data) => {
-      if (data.error) {
-        setData({ ...data, error: data.error });
-      } else {
-        setData({ clientToken: data.clientToken });
-      }
-    });
+  const getToken = async (userId, token) => {
+    const getData = await getBraintreeClientToken(userId, token);
+    if (getData.error) return setData({ ...getData, error: getData.error });
+    setData({ clientToken: getData.clientToken });
   };
 
   useEffect(() => {

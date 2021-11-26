@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { createProduct, getCategories, getBranches } from "./apiAdmin";
+import { Redirect } from "react-router-dom";
 
 const AddProduct = () => {
   const [values, setValues] = useState({
@@ -17,6 +18,7 @@ const AddProduct = () => {
     loading: false,
     error: "",
     createdProduct: "",
+    redirect: false,
     formData: "",
   });
 
@@ -31,6 +33,7 @@ const AddProduct = () => {
     loading,
     error,
     createdProduct,
+    redirect,
     formData,
   } = values;
 
@@ -59,26 +62,22 @@ const AddProduct = () => {
     setValues({ ...values, [name]: value });
   };
 
-  const clickSubmit = (event) => {
+  const clickSubmit = async (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-
-    createProduct(user._id, token, formData).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          ...values,
-          name: "",
-          description: "",
-          photo: "",
-          price: "",
-          countInStock: "",
-          loading: false,
-          createdProduct: data.name,
-        });
-      }
+    const click = await createProduct(user._id, token, formData);
+    if (click.error) return setValues({ ...values, error: click.error });
+    setValues({
+      ...values,
+      name: "",
+      description: "",
+      photo: "",
+      price: "",
+      countInStock: "",
+      loading: false,
+      redirect: true,
     });
+    console.log("Click");
   };
 
   const newPostForm = () => (
@@ -189,12 +188,21 @@ const AddProduct = () => {
       </div>
     );
 
+  const redirectToDashboard = () => {
+    if (redirect) {
+      if (!error) {
+        return <Redirect to="/admin/products" />;
+      }
+    }
+  };
+
   return (
     <Layout>
       <div className="row">
         <div className="col-md-8 offset-md-2">
           {showLoading()}
           {showSuccess()}
+          {redirectToDashboard()}
           {showError()}
           {newPostForm()}
         </div>

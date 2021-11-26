@@ -14,14 +14,10 @@ const Dashboard = () => {
   } = isAuthenticated();
   const token = isAuthenticated().token;
 
-  const init = (userId, token) => {
-    getPurchaseHistory(userId, token).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setHistory(data);
-      }
-    });
+  const init = async (userId, token) => {
+    const purchaseHistory = await getPurchaseHistory(userId, token);
+    if (purchaseHistory.error) return console.log(purchaseHistory.error);
+    setHistory(purchaseHistory);
   };
 
   useEffect(() => {
@@ -72,27 +68,31 @@ const Dashboard = () => {
             {history.map((h, i) => {
               return (
                 <div>
-                  <Table hover key={i} size="sm" className="text-xs-center text-lg-center">
-                  <thead>
-                    <tr>
-                      <th className="text-left">Order ID</th>
-                      <th >Product Name</th>
-                      <th >Product Price</th>
-                      <th >Quantity</th>                      
-                      <th>Address</th>
-                      <th>Purchased Date</th>
-                    </tr>
+                  <Table
+                    hover
+                    key={i}
+                    size="sm"
+                    className="text-xs-center text-lg-center"
+                  >
+                    <thead>
+                      <tr>
+                        <th className="text-left">Order ID</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Quantity</th>
+                        <th>Address</th>
+                        <th>Purchased Date</th>
+                      </tr>
                     </thead>
                     {h.products.map((p, pIndex) => (
                       <tr key={pIndex}>
-                        <td className="text-left">{h._id}</td>                        
+                        <td className="text-left">{h._id}</td>
                         <td>{p.name}</td>
                         <td>{p.price}</td>
                         <td>{p.count}</td>
                         <td>{h.address}</td>
                         <td>{moment(p.createdAt).fromNow()}</td>
                       </tr>
-                      
                     ))}
                     <br />
                   </Table>
@@ -101,7 +101,7 @@ const Dashboard = () => {
             })}
           </li>
         </ul>
-        </div>
+      </div>
     );
   };
 

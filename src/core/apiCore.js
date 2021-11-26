@@ -1,142 +1,134 @@
 import queryString from "query-string";
+// import { API } from "../config";
 
-export const getProducts = sortBy => {
-    return fetch(`http://localhost:8888/api/products?sortBy=${sortBy}&order=desc&limit=8`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const getProducts = async (sortBy) => {
+  const response = await fetch(
+    `http://localhost:8888/api/products?sortBy=${sortBy}&order=desc&limit=8`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const getCategories = () => {
-    return fetch(`http://localhost:8888/api/categories`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const getCategories = async () => {
+  const response = await fetch(`http://localhost:8888/api/categories`, {
+    method: "GET",
+  });
+  let data = await response.json();
+  console.log("data");
+  return data;
 };
 
-export const getBranches = () => {
-    return fetch(`http://localhost:8888/api/branches`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const getBranches = async () => {
+  const response = await fetch(`http://localhost:8888/api/branches`, {
+    method: "GET",
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const getFilteredProducts = (skip, limit, filters = {}) => {
-    const data = {
-        limit,
-        skip,
-        filters
-    };
-    return fetch(`http://localhost:8888/api/products/by/search`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+export const getFilteredProducts = async (skip, limit, filters = {}) => {
+  const values = {
+    limit,
+    skip,
+    filters,
+  };
+  const response = await fetch(`http://localhost:8888/api/by/search`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const list = params => {
-    const query = queryString.stringify(params);
-    console.log("query", query);
-    return fetch(`http://localhost:8888/api/products/search?${query}`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const list = async (params) => {
+  const query = queryString.stringify(params);
+  const response = await fetch(`http://localhost:8888/api/search?${query}`, {
+    method: "GET",
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const read = productId => {
-    return fetch(`http://localhost:8888/api/product/${productId}`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const read = async (productId) => {
+  const response = await fetch(
+    `http://localhost:8888/api/adminProduct/${productId}`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const listCategoryRelated = productId => {
-    return fetch(`http://localhost:8888/api/products/relatedCategory/${productId}`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const listCategoryRelated = async (productId) => {
+  const response = await fetch(
+    `http://localhost:8888/api/relatedCategory/${productId}`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const listBranchRelated = productId => {
-    return fetch(`http://localhost:8888/api/products/relatedBranch/${productId}`, {
-        method: "GET"
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const listBranchRelated = async (productId) => {
+  const response = await fetch(
+    `http://localhost:8888/api/relatedBranch/${productId}`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const getBraintreeClientToken = (userId, token) => {
-    return fetch(`http://localhost:8888/api/braintree/getToken/${userId}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const getBraintreeClientToken = async (userId, token) => {
+  const response = await fetch(`http://localhost:8888/api/getToken/${userId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const processPayment = (userId, token, payment) => {
-    return fetch(`http://localhost:8888/api/braintree/payment/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(payment)
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const processPayment = async (userId, token, payment) => {
+  const response = await fetch(`http://localhost:8888/api/payment/${userId}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payment),
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const createOrder = (userId, token, createOrder) => {
-    return fetch(`http://localhost:8888/api/order/create/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ order: createOrder})
-    })
-        .then(res => {
-            return res.json();
-        })
-        .catch(err => console.log(err));
+export const createOrder = async (userId, token, createOrder) => {
+  const response = await fetch(
+    `http://localhost:8888/api/order/create/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ order: createOrder }),
+    }
+  );
+  let data = await response.json();
+  return data;
 };

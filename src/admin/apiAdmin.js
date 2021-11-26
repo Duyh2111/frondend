@@ -1,167 +1,256 @@
+export let createCategory = async (userId, token, category) => {
+  const response = await fetch(
+    `http://localhost:8888/api/createCategory/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(category),
+    }
+  );
 
-export const createCategory = (userId, token, category) => {
-    return fetch(`http://localhost:8888/api/category/create/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(category)
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+  const data = await response.json();
+  return data;
 };
 
-export const createBranch = (userId, token, branch) => {
-    return fetch(`http://localhost:8888/api/branch/create/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(branch)
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+export const createBranch = async (userId, token, branch) => {
+  const response = await fetch(
+    `http://localhost:8888/api/createBranch/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(branch),
+    }
+  );
+
+  const data = await response.json();
+  return data;
 };
 
-export const createProduct = (userId, token, product) => {
-    return fetch(`http://localhost:8888/api/product/create/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: product
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+export const createProduct = async (userId, token, product) => {
+  const response = await fetch(
+    `http://localhost:8888/api/createProduct/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: product,
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const getCategories = () => {
-    return fetch(`http://localhost:8888/api/categories`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export let getCategories = async () => {
+  const response = await fetch(`http://localhost:8888/api/categories`, {
+    method: "GET",
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const getBranches = () => {
-    return fetch(`http://localhost:8888/api/branches`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getCategory = async (categoryId) => {
+  const response = await fetch(
+    `http://localhost:8888/api/adminCategory/${categoryId}`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const listOrders = (userId, token) => {
-    return fetch(`http://localhost:8888/api/order/list/${userId}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getBranch = async (branchId) => {
+  const response = await fetch(
+    `http://localhost:8888/api/adminBranch/${branchId}`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const getStatusValues = (userId, token) => {
-    return fetch(`http://localhost:8888/api/order/status-values/${userId}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const updateCategory = async (categoryId, userId, token, category) => {
+  const response = await fetch(
+    `http://localhost:8888/api/updateCategory/${categoryId}/${userId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(category),
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const updateOrderStatus = (userId, token, orderId, status) => {
-    return fetch(`http://localhost:8888/api/order/${orderId}/status/${userId}`, {
-        method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ status, orderId })
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const updateBranch = async (branchId, userId, token, branch) => {
+  const response = await fetch(
+    `http://localhost:8888/api/updateBranch/${branchId}/${userId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(branch),
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const getProducts = () => {
-    return fetch(`http://localhost:8888/api/products?limit=undefined`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getBranches = async () => {
+  const response = await fetch(`http://localhost:8888/api/branches`, {
+    method: "GET",
+  });
+  let data = await response.json();
+  return data;
 };
 
-export const deleteProduct = (productId, userId, token) => {
-    return fetch(`http://localhost:8888/api/product/${productId}/${userId}`, {
-        method: "DELETE",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const listOrders = async (userId, token) => {
+  const response = await fetch(
+    `http://localhost:8888/api/order/list/${userId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const getProduct = productId => {
-    return fetch(`http://localhost:8888/api/product/${productId}`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getStatusValues = async (userId, token) => {
+  const response = await fetch(
+    `http://localhost:8888/api/order/status-values/${userId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  let data = await response.json();
+  return data;
 };
 
-export const updateProduct = (productId, userId, token, product) => {
-    return fetch(`http://localhost:8888/api/product/${productId}/${userId}`, {
-        method: "PUT",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: product
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const updateOrderStatus = async (userId, token, orderId, status) => {
+  const response = await fetch(
+    `http://localhost:8888/api/order/${orderId}/status/${userId}`,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status, orderId }),
+    }
+  );
+  let data = await response.json();
+  return data;
+};
+
+export const getProducts = async () => {
+  const response = await fetch(
+    `http://localhost:8888/api/products?limit=undefined`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
+};
+
+export const deleteProduct = async (productId, userId, token) => {
+  const response = await fetch(
+    `http://localhost:8888/api/deleteProduct/${productId}/${userId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  let data = await response.json();
+  return data;
+};
+
+export const deleteCategory = async (categoryId, userId, token) => {
+  const response = await fetch(
+    `http://localhost:8888/api/deleteCategory/${categoryId}/${userId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  let data = await response.json();
+  return data;
+};
+
+export const deleteBranch = async (branchId, userId, token) => {
+  const response = await fetch(
+    `http://localhost:8888/api/deleteBranch/${branchId}/${userId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  let data = await response.json();
+  return data;
+};
+
+export const getProduct = async (productId) => {
+  const response = await fetch(
+    `http://localhost:8888/api/adminProduct/${productId}`,
+    {
+      method: "GET",
+    }
+  );
+  let data = await response.json();
+  return data;
+};
+
+export const updateProduct = async (productId, userId, token, product) => {
+  const response = await fetch(
+    `http://localhost:8888/api/updateProduct/${productId}/${userId}`,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: product,
+    }
+  );
+  let data = await response.json();
+  return data;
 };

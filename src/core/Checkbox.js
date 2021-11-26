@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
 const Checkbox = ({ categories, handleFilters }) => {
-  const [checked, setCheked] = useState([]);
+  const [checked, setChecked] = useState([]);
 
   const handleToggle = (c) => () => {
-
     const currentCategoryId = checked.indexOf(c);
     const newCheckedCategoryId = [...checked];
     if (currentCategoryId === -1) {
@@ -12,8 +11,8 @@ const Checkbox = ({ categories, handleFilters }) => {
     } else {
       newCheckedCategoryId.splice(currentCategoryId, 1);
     }
-    
-    setCheked(newCheckedCategoryId);
+
+    setChecked(newCheckedCategoryId);
     handleFilters(newCheckedCategoryId);
   };
 
@@ -31,5 +30,3 @@ const Checkbox = ({ categories, handleFilters }) => {
 };
 
 export default Checkbox;
-
-

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
-import { getCart, updateItem } from "./cartHelpers";
+import { getCart } from "./cartHelpers";
 import Checkout from "./Checkout";
-import { Row, Col, Card } from "react-bootstrap";
-import ShowImage from "./ShowImage";
+import { Row, Col } from "react-bootstrap";
 import CardProduct from "./Card";
 
 const Cart = () => {

@@ -13,9 +13,10 @@ const Orders = () => {
   const loadOrders = () => {
     listOrders(user._id, token).then((data) => {
       if (data.error) {
-        console.log(data.error);
+        console.log("fail ");
       } else {
         setOrders(data);
+        console.log("ok");
       }
     });
   };
@@ -89,7 +90,6 @@ const Orders = () => {
                     <th>Order ID</th>
                     <th>Status</th>
                     <th>Amount</th>
-                    <th>Ordered by</th>
                     <th>Ordered on</th>
                     <th>Delivery address</th>
                   </tr>
@@ -99,7 +99,6 @@ const Orders = () => {
                     <td>{o._id}</td>
                     <td>{showStatus(o)}</td>
                     <td>${o.amount}</td>
-                    <td>{o.user.name}</td>
                     <td>{moment(o.createdAt).fromNow()}</td>
                     <td>{o.address}</td>
                   </tr>

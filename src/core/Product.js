@@ -12,42 +12,25 @@ const Product = (props) => {
   const [product, setProduct] = useState({});
   const [relatedCategoryProduct, setRelatedCategoryProduct] = useState([]);
   const [relatedBranchProduct, setRelatedBranchProduct] = useState([]);
-  const [error, setError] = useState(false);
+
   const [redirect, setRedirect] = useState(false);
 
-
-  const loadSingleCategoryProduct = (productId) => {
-    read(productId).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setProduct(data);        
-        listCategoryRelated(data._id).then((data) => {
-          if (data.error) {
-            setError(data.error);
-          } else {
-            setRelatedCategoryProduct(data);
-          }
-        });
-      }
-    });
+  const loadSingleCategoryProduct = async (productId) => {
+    const categoryProduct = await read(productId);
+    if (categoryProduct.error) return console.log(categoryProduct.error);
+    setProduct(categoryProduct);
+    const category = await listCategoryRelated(categoryProduct._id);
+    if (category.error) return console.log(category.error);
+    setRelatedCategoryProduct(category);
   };
 
-  const loadSingleBranchProduct = (productId) => {
-    read(productId).then((data1) => {
-      if (data1.error) {
-        setError(data1.error);
-      } else {
-        setProduct(data1);        
-        listBranchRelated(data1._id).then((data1) => {
-          if (data1.error) {
-            setError(data1.error);
-          } else {
-            setRelatedBranchProduct(data1);
-          }
-        });
-      }
-    });
+  const loadSingleBranchProduct = async (productId) => {
+    const branchProduct = await read(productId);
+    if (branchProduct.error) return console.log(branchProduct.error);
+    setProduct(branchProduct);
+    const branchRelate = await listBranchRelated(branchProduct._id);
+    if (branchRelate.error) return console.log(branchRelate.error);
+    setRelatedBranchProduct(branchRelate);
   };
 
   const showStock = (countInStock) => {
@@ -101,11 +84,11 @@ const Product = (props) => {
           <Row className="col-5 pr-20" style={{ paddingRight: 70 }}>
             <Card.Text>
               <h4 className="font-weight-bold">{product.name}</h4>
-              <h5>Category: {product.category && product.category.name}</h5>              
+              <h5>Category: {product.category && product.category.name}</h5>
               <p>{product.description}</p>
               <span className="font-italic font-weight-light">
-            Added on {moment(product.createdAt).fromNow()}
-          </span>
+                Added on {moment(product.createdAt).fromNow()}
+              </span>
             </Card.Text>
           </Row>
           <Row className="col-3" style={{ paddingRight: 40, marginBottom: 40 }}>
@@ -151,7 +134,7 @@ const Product = (props) => {
           </div>
         </Container>
       </Card>
-      <br/>
+      <br />
       <Card style={{ border: "none" }}>
         <Container>
           <h4 style={{ marginTop: 20, marginBottom: 20 }}>Related branches</h4>
@@ -163,7 +146,7 @@ const Product = (props) => {
             ))}
           </div>
         </Container>
-      </Card> 
+      </Card>
     </Layout>
   );
 };

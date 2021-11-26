@@ -7,10 +7,8 @@ const CardProduct = ({
   product,
   quantity = false,
   RemoveButton = false,
-  countInStock = true,
   setRun = (f) => f,
   run = undefined,
-  // changeCartSize
 }) => {
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
@@ -35,7 +33,7 @@ const CardProduct = ({
         Add to cart
       </Button>
     ) : (
-      <div></div>
+      <></>
     );
   };
 
@@ -105,10 +103,18 @@ const CardProduct = ({
       </Card.Header>
       <Card.Body>
         {shouldRedirect(redirect)}
-        <Card.Title >
-          <Link className="d-inline-block text-truncate" style={{maxWidth: "100% ",color: "black", fontSize: "18px", textDecoration: "none"}} to={`/product/${product._id}`}>
+        <Card.Title>
+          <Link
+            className="d-inline-block text-truncate"
+            style={{
+              maxWidth: "100% ",
+              color: "black",
+              fontSize: "18px",
+              textDecoration: "none",
+            }}
+            to={`/product/${product._id}`}
+          >
             {product.name}
-            
           </Link>
         </Card.Title>
         <Card.Text>
@@ -123,7 +129,7 @@ const CardProduct = ({
             <Col xs={5} className="text-right">
               <h6 className="font-italic">${product.price}</h6>
             </Col>
-            <Col xl={12}>{showAddToCart(countInStock)}</Col>
+            <Col xl={12}>{showAddToCart(product.countInStock)}</Col>
           </Row>
         </Card.Text>
         {showRemoveButton(RemoveButton)}

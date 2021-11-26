@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
+import { Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import { getProduct, updateProduct } from "./apiAdmin";
 
 const UpdateProduct = ({ match }) => {
-    
   const [values, setValues] = useState({
     name: "",
     description: "",
     price: "",
-    // categories: [],
-    // category: "",
-    // shipping: "",
     countInStock: "",
     photo: "",
     loading: false,
     error: false,
-    createdProduct: "",    
+    redirect: false,
+    createdProduct: "",
     formData: "",
   });
 
@@ -25,33 +23,24 @@ const UpdateProduct = ({ match }) => {
     name,
     description,
     price,
-    // categories,
-    branches,
     countInStock,
     loading,
     error,
+    redirect,
     createdProduct,
     formData,
   } = values;
 
-  const init = (productId) => {
-    getProduct(productId).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        // populate the state
-        setValues({
-          ...values,
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          // branch: data.branch._id,
-          countInStock: data.countInStock,
-          formData: new FormData(),
-        });
-        // load categories
-        // initCategories();
-      }
+  const init = async (productId) => {
+    const product = await getProduct(productId);
+    if (product.error) return setValues({ ...values, error: product.error });
+    setValues({
+      ...values,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      countInStock: product.countInStock,
+      formData: new FormData(),
     });
   };
 
@@ -63,36 +52,31 @@ const UpdateProduct = ({ match }) => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, [name]: value });
-    
   };
 
-  const clickSubmit = (event) => {
+  const clickSubmit = async (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-
-    updateProduct(match.params.productId, user._id, token, formData).then(
-      (data) => {
-        if (data.error) {
-          setValues({ ...values, error: data.error });
-        } else {
-          setValues({
-            ...values,
-            name: "",
-            description: "",
-            photo: "",
-            price: "",
-            countInStock: "",
-            loading: false,
-            error: false,
-            redirectToProfile: true,
-            createdProduct: data.name,
-          });
-        }
-      }
+    const click = await updateProduct(
+      match.params.productId,
+      user._id,
+      token,
+      formData
     );
+    if (click.error) return setValues({ ...values, error: click.error });
+    setValues({
+      ...values,
+      name: "",
+      description: "",
+      photo: "",
+      price: "",
+      countInStock: "",
+      loading: false,
+      error: false,
+      redirect: true,
+      createdProduct: click.name,
+    });
   };
-
-  
 
   const newPostForm = () => (
     <form className="mb-3" onSubmit={clickSubmit}>
@@ -136,8 +120,6 @@ const UpdateProduct = ({ match }) => {
           value={price}
         />
       </div>
-      
-    
 
       {/* <div className="form-group">
         <label className="text-muted">Shipping</label>
@@ -161,7 +143,6 @@ const UpdateProduct = ({ match }) => {
       <button className="btn btn-outline-primary">Update Product</button>
     </form>
   );
-
 
   const showError = () => (
     <div
@@ -188,13 +169,13 @@ const UpdateProduct = ({ match }) => {
       </div>
     );
 
-  //   const redirectUser = () => {
-  //     if (redirectToProfile) {
-  //       if (!error) {
-  //         return <Redirect to="/" />;
-  //       }
-  //     }
-  //   };
+  const redirectUser = () => {
+    if (redirect) {
+      if (!error) {
+        return <Redirect to="/admin/products" />;
+      }
+    }
+  };
 
   return (
     <Layout
@@ -207,7 +188,7 @@ const UpdateProduct = ({ match }) => {
           {showSuccess()}
           {showError()}
           {newPostForm()}
-          {/* {redirectUser()} */}
+          {redirectUser()}
         </div>
       </div>
     </Layout>

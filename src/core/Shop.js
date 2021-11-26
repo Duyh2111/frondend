@@ -3,7 +3,6 @@ import Layout from "./Layout";
 import CardProduct from "./Card";
 import { getCategories, getFilteredProducts, getBranches } from "./apiCore";
 import Checkbox from "./Checkbox";
-import CheckboxBranch from "./checkboxBranch";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
 import Search from "./Search";
@@ -21,50 +20,34 @@ const Shop = () => {
   const [size, setSize] = useState(0);
   const [filteredResults, setFilteredResults] = useState([]);
 
-  const init = () => {
-    getCategories().then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setCategories(data);
-      }
-    });
+  const init = async () => {
+    const categories = await getCategories();
+    if (categories.error) return setError(categories.error);
+    const branches = await getBranches();
+    if (branches.error) return setError(branches.error);
+    setCategories(categories);
+    setBranches(branches);
   };
 
-  const init1 = () => {
-    getBranches().then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setBranches(data);
-      }
-    });
+  const loadFilteredResults = async (newFilters) => {
+    const filter = await getFilteredProducts(skip, limit, newFilters);
+    if (filter.error) return setError(filter.error);
+    setFilteredResults(filter.data);
+    setSize(filter.size);
+    setSkip(0);
   };
 
-  const loadFilteredResults = (newFilters) => {
-    getFilteredProducts(skip, limit, newFilters).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setFilteredResults(data.data);
-        setSize(data.size);
-        setSkip(0);
-      }
-    });
-  };
-
-  const loadMore = () => {
-    let toSkip = skip + limit;
-    // console.log(newFilters);
-    getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setFilteredResults([...filteredResults, ...data.data]);
-        setSize(data.size);
-        setSkip(toSkip);
-      }
-    });
+  const loadMore = async () => {
+    const toSkip = skip + limit;
+    const filterProduct = await getFilteredProducts(
+      toSkip,
+      limit,
+      myFilters.filters
+    );
+    if (filterProduct.error) return setError(filterProduct.error);
+    setFilteredResults([...filteredResults, ...filterProduct.data]);
+    setSize(filterProduct.size);
+    setSkip(toSkip);
   };
 
   const loadMoreButton = () => {
@@ -80,7 +63,6 @@ const Shop = () => {
 
   useEffect(() => {
     init();
-    init1();
     loadFilteredResults(skip, limit, myFilters.filters);
   }, []);
 
@@ -128,9 +110,7 @@ const Shop = () => {
               <ul>
                 <Checkbox
                   categories={branches}
-                  handleFilters={(filters) =>
-                    handleFilters(filters, "branch")
-                  }
+                  handleFilters={(filters) => handleFilters(filters, "branch")}
                 />
               </ul>
               <h4>Filter by price range</h4>
