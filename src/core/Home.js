@@ -18,7 +18,7 @@ const Home = () => {
   };
 
   const loadProductsByArrival = async () => {
-    const productArrival = await getProducts("createAt");
+    const productArrival = await getProducts("createdAt");
     if (productArrival.error) return setError(productArrival.error);
     setProductsByArrival(productArrival);
   };
